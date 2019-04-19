@@ -38,8 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         sharedPreferences = getSharedPreferences("HTTP_HELPER_PREFS", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        // assign buttons
-        // buttonPin1 = (ToggleButton)findViewById(R.id.toggleButton);
+        // assign button
         buttonPin2 = (ToggleButton)findViewById(R.id.toggleButton2);
 
         // assign text inputs
@@ -47,7 +46,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         editTextPortNumber = (EditText)findViewById(R.id.editTextPortNumber);
 
         // set button listener (this class)
-        //buttonPin1.setOnClickListener(this);
         buttonPin2.setOnClickListener(this);
 
         // get the IP address and port number from the last time the user used the app,
@@ -96,24 +94,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         public static final String REQUEST_METHOD = "GET";
         public static final int READ_TIMEOUT = 30000;
         public static final int CONNECTION_TIMEOUT = 30000;
-        /*private String result,ipAddress, portNumber;
-        private Context context;
-        private AlertDialog alertDialog;
-        private String parameter;
-        private String parameterValue;
 
-        public HttpGetRequest(Context context,String parameterValue, String ipAddress, String portNumber, String parameter){
-            this.context=context;
-            alertDialog = new AlertDialog.Builder(this.context)
-                    .setTitle("HTTP Response From IP Address:")
-                    .setCancelable(true)
-                    .create();
-
-            this.ipAddress = ipAddress;
-            this.parameterValue = parameterValue;
-            this.portNumber = portNumber;
-            this.parameter = parameter;
-        }*/
         private Context mContext;
         String result;
         public HttpGetRequest(Context context) {
@@ -126,15 +107,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
             String stringUrl = params[0];
 
             try {
-                //Create a URL object holding our url
-                /*stringUrl+="http://";
-                stringUrl+=ipAddress;
-                stringUrl+=":";
-                stringUrl+=portNumber;
-                stringUrl+="/?";
-                stringUrl+=parameter;
-                stringUrl+="=";
-                stringUrl+=parameterValue;*/
                 URL myUrl = new URL(stringUrl);
                 //Create a connection
                 HttpURLConnection connection =(HttpURLConnection)
