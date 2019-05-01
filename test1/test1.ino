@@ -7,7 +7,6 @@ int threshold=500;
 int connectionId;
 int sensorval;
 int a=0;
-boolean iotLogic = true;
 SoftwareSerial esp8266(10,11); // make RX Arduino line is pin 2, make TX Arduino line is pin 3.
                              // This means that you need to connect the TX line from the esp to the Arduino's pin 2
                              // and the RX line from the esp to the Arduino's pin 3
@@ -29,21 +28,19 @@ void setup()
  
 void loop()
 {
- sensorval=analogRead(ldr);
- if(a!=11){
- if(sensorval>threshold){
-    digitalWrite(8,LOW);
-  }
+   sensorval=analogRead(ldr);
+    if(a!=11){
+   if(sensorval>threshold){
+     digitalWrite(8,LOW);
+    }
    else{
     digitalWrite(8,HIGH);
    }
- }
-  delay(1000);
+  }
+  delay(500);
   if(esp8266.available()) // check if the esp is sending a message 
   {
-    a = checkLed();
-    delay(1000);
-   
+     a = checkLed();
      // build string that is send back to device that is requesting pin toggle
      String content;
      content = "Pin ";
@@ -67,9 +64,31 @@ void loop()
      //closeCommand+="\r\n";
      
      //sendCommand(closeCommand,1000,DEBUG); // close connection
-    }
-  
+  }
 }
+
+/*void checkLdr(int sensorval){
+      if(esp8266.find("+IPD,"))
+    {
+     delay(1000); // wait for the serial buffer to fill up (read all the serial data)
+     // get the connection id so that we can then disconnect
+     connectionId = esp8266.read()-48; // subtract 48 because the read() function returns 
+                                           // the ASCII decimal value and 0 (the first decimal number) starts at 48   
+     Serial.println(connectionId);
+         esp8266.find("IOT=");// advance cursor to "pin="
+         delay(1000);
+     int iot= esp8266.read()-48;
+     Serial.println(iot);
+      if(iot==1){
+      if(sensorval>400){
+        digitalWrite(led,LOW);
+      }
+      else{
+        digitalWrite(led,HIGH);
+      }
+    }
+}
+}*/
  
  int checkLed(){
    if(esp8266.find("+IPD,"))
@@ -81,7 +100,7 @@ void loop()
      Serial.println(connectionId);
 
       esp8266.find("pin=");
-      delay(1000);
+      delay(500);
       int val=esp8266.read()-48;
       Serial.println(val);
       if(val==1){

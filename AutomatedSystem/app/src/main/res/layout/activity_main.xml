@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/xyz"
     >
 
     <LinearLayout
@@ -42,21 +43,13 @@
             android:id="@+id/toggleButton2"
             android:layout_width="191dp"
             android:layout_height="102dp"
+            android:layout_marginTop="110dp"
             android:textOff="OFF"
             android:textOn="ON"
             android:text="ToggleButton"
             android:layout_weight="0.73"
             android:layout_marginLeft="90dp"/>
 
-        <ToggleButton
-            android:id="@+id/switch1"
-            android:layout_width="140dp"
-            android:layout_marginLeft="110dp"
-            android:layout_marginTop="100dp"
-            android:layout_height="wrap_content"
-            android:textOn="ON"
-            android:textOff="OFF"
-            android:text="IOT Switch" />
 
     </LinearLayout>
 

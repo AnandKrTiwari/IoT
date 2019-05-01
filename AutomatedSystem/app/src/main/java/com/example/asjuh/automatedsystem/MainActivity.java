@@ -3,11 +3,11 @@ package com.example.asjuh.automatedsystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import java.io.BufferedReader;
@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public final static String PREF_PORT = "PREF_PORT_NUMBER";
     // declare buttons and text inputs
     private ToggleButton buttonPin2;
-    private ToggleButton IOTbutton;
+   // private ToggleButton IOTbutton;
     private EditText editTextIPAddress, editTextPortNumber;
     // shared preferences objects used to save the IP address and port so that the user doesn't have to
     // type them next time he/she opens the app.
@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editor = sharedPreferences.edit();
 
         // assign buttons
-        IOTbutton = (ToggleButton)findViewById(R.id.switch1);
+        //IOTbutton = (ToggleButton)findViewById(R.id.switch1);
         buttonPin2 = (ToggleButton)findViewById(R.id.toggleButton2);
 
         // assign text inputs
@@ -48,13 +48,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // set button listener (this class)
         buttonPin2.setOnClickListener(this);
-        IOTbutton.setOnClickListener(this);
+       //  IOTbutton.setOnClickListener(this);
         // get the IP address and port number from the last time the user used the app,
         // put an empty string "" is this is the first time.
         editTextIPAddress.setText(sharedPreferences.getString(PREF_IP,""));
         editTextPortNumber.setText(sharedPreferences.getString(PREF_PORT,""));
     }
-
 
     @Override
     public void onClick(View view) {
@@ -74,22 +73,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editor.commit(); // save the IP and PORT
 
         // get the pin number from the button that was clicked
-        if(view.getId()==IOTbutton.getId() && IOTbutton.getText().equals("ON")){
+        if(view.getId() == buttonPin2.getId() && buttonPin2.getText().equals("ON") ) {
                 parameterValue.replace(0,1,"1");
-            if(ipAddress.length()>0 && portNumber.length()>0) {
-                HttpGetRequest htp1 = new HttpGetRequest(this);
-                htp1.execute("http://" + ipAddress + ":" + portNumber + "/?" + "IOT=" + parameterValue);
-            }
-            }
-        else if(view.getId()==IOTbutton.getId() && IOTbutton.getText().equals("OFF")) {
-                parameterValue.replace(0,1,"0");
-            if(ipAddress.length()>0 && portNumber.length()>0) {
-                HttpGetRequest htp1 = new HttpGetRequest(this);
-                htp1.execute("http://" + ipAddress + ":" + portNumber + "/?" + "IOT=" + parameterValue);
-            }
-        }
-        else if(view.getId() == buttonPin2.getId() && buttonPin2.getText().equals("ON") ) {
-                parameterValue.replace(0,1,"1");
+                buttonPin2.setTextColor(Color.GREEN);
             if(ipAddress.length()>0 && portNumber.length()>0) {
                 HttpGetRequest htp = new HttpGetRequest(this);
                 htp.execute("http://" + ipAddress + ":" + portNumber + "/?" + "pin=" + parameterValue);
@@ -97,6 +83,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         else if(view.getId() == buttonPin2.getId() && buttonPin2.getText().equals("OFF")){
                 parameterValue.replace(0,1,"0");
+                buttonPin2.setTextColor(Color.RED);
             if(ipAddress.length()>0 && portNumber.length()>0) {
                 HttpGetRequest htp = new HttpGetRequest(this);
                 htp.execute("http://" + ipAddress + ":" + portNumber + "/?" + "pin=" + parameterValue);
@@ -121,9 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         @Override
         protected String doInBackground(String... params) {
             String stringUrl = params[0];
-
             try {
-
                 URL myUrl = new URL(stringUrl);
                 //Create a connection
                 HttpURLConnection connection =(HttpURLConnection)
