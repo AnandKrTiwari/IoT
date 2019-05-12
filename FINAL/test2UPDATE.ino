@@ -11,6 +11,7 @@ int connectionId;
 int sensorval,sensorval2,sensy;
 int a=0;
 int b=0;
+int IOT=100,IOT1=100;
 SoftwareSerial esp8266(10,11); // make RX Arduino line is pin 2, make TX Arduino line is pin 3.
                              // This means that you need to connect the TX line from the esp to the Arduino's pin 2
                              // and the RX line from the esp to the Arduino's pin 3
@@ -21,7 +22,7 @@ void setup()
   
   pinMode(led,OUTPUT); 
   pinMode(bulb,OUTPUT);
-  digitalWrite(bulb,HIGH);  
+  digitalWrite(bulb,LOW);  
   digitalWrite(led,LOW);
   sendCommand("AT+RST\r\n",2000,DEBUG); // reset module
   sendCommand("AT+CWMODE=2\r\n",2000,DEBUG); // configure as access point
@@ -37,7 +38,9 @@ void loop()
   //turning IOT Logic on n off for bulb 1
   sensorval=analogRead(ldr);
   
-  if(a!=11){
+  //if(a!=11)//NEW IOT VARIABLE
+  
+          if(IOT==100){
    if(sensorval>threshold){
      digitalWrite(8,LOW);
     }
@@ -49,14 +52,16 @@ void loop()
   //RELAY IS ACTIVE LOW AND IS CONNECTED TO PIN 6 HENCE WE SEND HIGH FOR OFF & LOW FOR ON
   //turning IOT Logic on n off for bulb 2
    sensorval2=analogRead(ldr);
-  if(b!=8){
+    if(IOT1==100){//new
+ // if(b!=8){
    if(sensorval2>threshold){
-     digitalWrite(6,HIGH);
+     digitalWrite(6,LOW);
     }
    else{
-    digitalWrite(6,LOW);
+    digitalWrite(6,HIGH);
    }
   }
+
   delay(500);
   if(esp8266.available()) // check if the esp is sending a message 
   {
@@ -139,30 +144,37 @@ void loop()
       delay(500);
       int val=esp8266.read()-48;
       Serial.println(val);
-      if(val==8){
+      if(val==4){
+        IOT=100;
+        IOT1=100;//Iot is on
+      }else if(val==3){
+        IOT=200;
+        IOT1=200;
+      }
+      else if(val==8){
         //turning on the led
         digitalWrite(led,HIGH);
+        IOT = 200;//OFF LOGIC
       }else if(val==6){
         //turning on the bulb connected to relay
-        digitalWrite(bulb,LOW);
+        digitalWrite(bulb,HIGH);
+         IOT1 = 200;
       }
       else if(val==1){
         //turning off the led
         digitalWrite(led,LOW);
+         IOT = 200;
       }else if(val==2){
         //turning off the bulb connected to relay
-        digitalWrite(bulb,HIGH);
-      }else if(val==100){
-        a=2;
-        b=2;
+        digitalWrite(bulb,LOW);
+         IOT1 = 200;
       }
-      else if(val==200){
-        a=11;
-        b=11;
-      }
+    }
       //set iot logic variable bulb 1
-      if(digitalRead(led)){
-        a=11;
+      
+      /* //COMMENTED IOT LOGIC
+      if(digitalRead(led)){val
+        a=11; //OFF
       }
       else{
         a=2;
@@ -174,7 +186,7 @@ void loop()
       else{
         b=2;
       }
-    }
+    }*/
      delay(1000);
     sensy=analogRead(ldr3);
  

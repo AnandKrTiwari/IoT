@@ -3,7 +3,7 @@
 #define DEBUG true
 int led =8;
 int bulb=6;
-//int ldr2=A1;
+int ldr2=A1;
 int ldr = A0;
 int ldr3=A2;
 int threshold=300;
@@ -21,7 +21,7 @@ void setup()
   
   pinMode(led,OUTPUT); 
   pinMode(bulb,OUTPUT);
-  digitalWrite(bulb,HIGH);  
+  digitalWrite(bulb,LOW);  
   digitalWrite(led,LOW);
   sendCommand("AT+RST\r\n",2000,DEBUG); // reset module
   sendCommand("AT+CWMODE=2\r\n",2000,DEBUG); // configure as access point
@@ -34,9 +34,8 @@ void setup()
  
 void loop()
 {
-  //turning IOT Logic on n off for bulb 1
   sensorval=analogRead(ldr);
-  
+  if(sensorval>threshold){
   if(a!=11){
    if(sensorval>threshold){
      digitalWrite(8,LOW);
@@ -44,23 +43,30 @@ void loop()
    else{
     digitalWrite(8,HIGH);
    }
-  }
- 
-  //RELAY IS ACTIVE LOW AND IS CONNECTED TO PIN 6 HENCE WE SEND HIGH FOR OFF & LOW FOR ON
-  //turning IOT Logic on n off for bulb 2
-   sensorval2=analogRead(ldr);
-  if(b!=8){
-   if(sensorval2>threshold){
-     digitalWrite(6,HIGH);
+  }}
+  else{
+      if(a!=2){
+   if(sensorval>threshold){
+     digitalWrite(8,LOW);
     }
    else{
-    digitalWrite(6,LOW);
+    digitalWrite(8,HIGH);
+   }
+  }
+  }
+  sensorval2=analogRead(ldr);
+
+  if(b!=8){
+   if(sensorval2>threshold){
+     digitalWrite(6,LOW);
+    }
+   else{
+    digitalWrite(6,HIGH);
    }
   }
   delay(500);
   if(esp8266.available()) // check if the esp is sending a message 
   {
-    //check which bulb the app wants to switch
      checkLed();
      //b=checkLed();
      // build string that is send back to device that is requesting pin toggle
@@ -125,7 +131,7 @@ void loop()
     }
 }
 }*/
-//getting msg from the app 
+ 
  void checkLed(){
    if(esp8266.find("+IPD,"))
     {
@@ -140,44 +146,38 @@ void loop()
       int val=esp8266.read()-48;
       Serial.println(val);
       if(val==8){
-        //turning on the led
         digitalWrite(led,HIGH);
+        a=11;
       }else if(val==6){
-        //turning on the bulb connected to relay
-        digitalWrite(bulb,LOW);
+        digitalWrite(bulb,HIGH);
+        b=8;
       }
       else if(val==1){
-        //turning off the led
         digitalWrite(led,LOW);
-      }else if(val==2){
-        //turning off the bulb connected to relay
-        digitalWrite(bulb,HIGH);
-      }else if(val==100){
         a=2;
-        b=2;
+      }else if(val==2){
+        digitalWrite(bulb,LOW);
+        b=8;
+      }else{
+        a=0;
+        b=0;
       }
-      else if(val==200){
-        a=11;
-        b=11;
-      }
-      //set iot logic variable bulb 1
-      if(digitalRead(led)){
+     /* if(digitalRead(led)){
         a=11;
       }
       else{
         a=2;
       }
-      //set iot logic variable for bulb2
       if(digitalRead(bulb)){
         b=8;
       }
       else{
         b=2;
-      }
+      }*/
     }
      delay(1000);
     sensy=analogRead(ldr3);
- 
+    
  }
 /*
 * Name: sendData

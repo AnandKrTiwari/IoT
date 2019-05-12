@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public final static String PREF_IP = "PREF_IP_ADDRESS";
     public final static String PREF_PORT = "PREF_PORT_NUMBER";
     // declare buttons and text inputs
-    private ToggleButton buttonPin2,buttonPin;
+    private ToggleButton buttonPin2,buttonPin,buttonPin3;
    // private ToggleButton IOTbutton;
     private EditText editTextIPAddress, editTextPortNumber;
     // shared preferences objects used to save the IP address and port so that the user doesn't have to
@@ -42,6 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //IOTbutton = (ToggleButton)findViewById(R.id.switch1);
         buttonPin2 = (ToggleButton)findViewById(R.id.toggleButton2);
         buttonPin = (ToggleButton)findViewById(R.id.toggleButton);
+        buttonPin3 = (ToggleButton)findViewById(R.id.toggleButton3);
 
         // assign text inputs
         editTextIPAddress = (EditText)findViewById(R.id.editTextIPAddress);
@@ -50,6 +51,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // set button listener (this class)
         buttonPin2.setOnClickListener(this);
         buttonPin.setOnClickListener(this);
+        buttonPin3.setOnClickListener(this);
        //  IOTbutton.setOnClickListener(this);
         // get the IP address and port number from the last time the user used the app,
         // put an empty string "" is this is the first time.
@@ -90,6 +92,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         else if(view.getId() == buttonPin.getId() && buttonPin.getText().equals("OFF")){
             parameterValue.replace(0,1,"2");
             buttonPin.setTextColor(Color.RED);
+        }
+        else if(view.getId() == buttonPin3.getId() && buttonPin3.getText().equals("ON")){
+            parameterValue.replace(0,1,"4");
+            buttonPin3.setTextColor(Color.GREEN);
+        }
+        else if(view.getId() == buttonPin3.getId() && buttonPin3.getText().equals("OFF")){
+            parameterValue.replace(0,1,"3");
+            buttonPin3.setTextColor(Color.RED);
         }
         if(ipAddress.length()>0 && portNumber.length()>0) {
             HttpGetRequest htp = new HttpGetRequest(this);
