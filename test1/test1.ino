@@ -54,7 +54,6 @@ void loop()
    }
   }
   delay(500);
-  sensy=analogRead(ldr3);
   if(esp8266.available()) // check if the esp is sending a message 
   {
      checkLed();
@@ -75,26 +74,24 @@ void loop()
      content += " & Bulb 2";
      content += " is ";
      
-     if(sensy < threshold){
-      if(digitalRead(bulb) {
+     if(sensy>800 && digitalRead(bulb)){
        content += "ON";
-      }
-       else 
+     }
+     else if(sensy<800 && digitalRead(bulb))
       {
        content += "faulty";
       }
-    }
-     else 
-      {
+    else{
        content += "OFF";
-      }
+      
+    }
     
      
      sendHTTPResponse(connectionId,content);
      
      // make close command
      //String closeCommand = "AT+CIPCLOSE="; 
-     //loseCommand+=connectionId; // append connection id
+     //closeCommand+=connectionId; // append connection id
      //closeCommand+="\r\n";
      
      //sendCommand(closeCommand,1000,DEBUG); // close connection
@@ -127,14 +124,14 @@ void loop()
  void checkLed(){
    if(esp8266.find("+IPD,"))
     {
-     delay(300); // wait for the serial buffer to fill up (read all the serial data)
+     delay(1000); // wait for the serial buffer to fill up (read all the serial data)
      // get the connection id so that we can then disconnect
      connectionId = esp8266.read()-48; // subtract 48 because the read() function returns 
                                            // the ASCII decimal value and 0 (the first decimal number) starts at 48   
      Serial.println(connectionId);
 
       esp8266.find("pin=");
-      delay(300);
+      delay(500);
       int val=esp8266.read()-48;
       Serial.println(val);
       if(val==8){
@@ -160,6 +157,9 @@ void loop()
         b=2;
       }
     }
+     delay(1000);
+    sensy=analogRead(ldr3);
+ 
  }
 /*
 * Name: sendData
