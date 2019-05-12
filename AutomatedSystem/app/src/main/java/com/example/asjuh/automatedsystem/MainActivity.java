@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public final static String PREF_IP = "PREF_IP_ADDRESS";
     public final static String PREF_PORT = "PREF_PORT_NUMBER";
     // declare buttons and text inputs
-    private ToggleButton buttonPin2;
+    private ToggleButton buttonPin2,buttonPin;
    // private ToggleButton IOTbutton;
     private EditText editTextIPAddress, editTextPortNumber;
     // shared preferences objects used to save the IP address and port so that the user doesn't have to
@@ -41,6 +41,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // assign buttons
         //IOTbutton = (ToggleButton)findViewById(R.id.switch1);
         buttonPin2 = (ToggleButton)findViewById(R.id.toggleButton2);
+        buttonPin = (ToggleButton)findViewById(R.id.toggleButton);
 
         // assign text inputs
         editTextIPAddress = (EditText)findViewById(R.id.editTextIPAddress);
@@ -48,6 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // set button listener (this class)
         buttonPin2.setOnClickListener(this);
+        buttonPin.setOnClickListener(this);
        //  IOTbutton.setOnClickListener(this);
         // get the IP address and port number from the last time the user used the app,
         // put an empty string "" is this is the first time.
@@ -74,20 +76,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // get the pin number from the button that was clicked
         if(view.getId() == buttonPin2.getId() && buttonPin2.getText().equals("ON") ) {
-                parameterValue.replace(0,1,"1");
+                parameterValue.replace(0,1,"8");
                 buttonPin2.setTextColor(Color.GREEN);
-            if(ipAddress.length()>0 && portNumber.length()>0) {
-                HttpGetRequest htp = new HttpGetRequest(this);
-                htp.execute("http://" + ipAddress + ":" + portNumber + "/?" + "pin=" + parameterValue);
-            }
+        }
+        else if(view.getId() == buttonPin.getId() && buttonPin.getText().equals("ON")){
+            parameterValue.replace(0,1,"6");
+            buttonPin.setTextColor(Color.GREEN);
         }
         else if(view.getId() == buttonPin2.getId() && buttonPin2.getText().equals("OFF")){
-                parameterValue.replace(0,1,"0");
+                parameterValue.replace(0,1,"1");
                 buttonPin2.setTextColor(Color.RED);
-            if(ipAddress.length()>0 && portNumber.length()>0) {
-                HttpGetRequest htp = new HttpGetRequest(this);
-                htp.execute("http://" + ipAddress + ":" + portNumber + "/?" + "pin=" + parameterValue);
-            }
+        }
+        else if(view.getId() == buttonPin.getId() && buttonPin.getText().equals("OFF")){
+            parameterValue.replace(0,1,"2");
+            buttonPin.setTextColor(Color.RED);
+        }
+        if(ipAddress.length()>0 && portNumber.length()>0) {
+            HttpGetRequest htp = new HttpGetRequest(this);
+            htp.execute("http://" + ipAddress + ":" + portNumber + "/?" + "pin=" + parameterValue);
         }
     }
 

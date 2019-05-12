@@ -39,14 +39,43 @@
             android:hint="e.g. 80"
             android:id="@+id/editTextPortNumber" />
 
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="86dp"
+            android:layout_height="30dp"
+            android:layout_width="160dp"
+            android:textSize="25dp"
+            android:text="Appliance 1"
+            android:id="@+id/textView3" />
+
         <ToggleButton
             android:id="@+id/toggleButton2"
             android:layout_width="191dp"
             android:layout_height="102dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="20dp"
             android:textOff="OFF"
             android:textOn="ON"
             android:text="ToggleButton"
+            android:layout_weight="0.73"
+            android:layout_marginLeft="90dp"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="86dp"
+            android:layout_height="30dp"
+            android:layout_width="160dp"
+            android:textSize="25dp"
+            android:text="Appliance 2"
+            android:id="@+id/textView4" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="191dp"
+            android:layout_height="102dp"
+            android:layout_marginTop="20dp"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:text="ToggleButton1"
             android:layout_weight="0.73"
             android:layout_marginLeft="90dp"/>
 
